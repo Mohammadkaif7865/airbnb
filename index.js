@@ -18,11 +18,18 @@ app.use(express.json());
 app.get('/', (req, res) => {
     res.send('Express server default');
 });
+// db.test.find({'array':{$elemMatch:{value:"value2"}})
 app.get('/reviews', (req, res) => {
     db.collection('listingsAndReviews').find({ "price": { $gt: 2500, $lt: 5000 } }).sort({ "price": 1 }).toArray((err, result) => {
         if (err) throw err;
         res.send(result);
     });
+});
+app.get('/amenities', (req, res) => {
+    db.collection('listingsAndReviews').find({ "amenities": {} }).toArray((err, result) => {
+        if (err) throw err;
+        res.send(result);
+    })
 })
 MongoClient.connect(mongoUrl, (err, client) => {
     if (err) {

@@ -27,7 +27,7 @@ app.get('/reviews', (req, res) => {
 });
 app.get('/amenities', (req, res) => {
     // { "amenities": { $elemMatch: { $in: ["Beachfront"] } } }
-    db.collection('listingsAndReviews').find({ $and: [{ "amenities": { "$in": ["Beachfront"] }, "amenities": { "$in": ["Smoking allowed"] } }] }).toArray((err, result) => {
+    db.collection('listingsAndReviews').find({ $and: [{ "amenities": { $in: ["Beachfront"] }, "amenities": { $in: ["Smoking allowed"] } }] }).toArray((err, result) => {
         if (err) throw err;
         res.send(result);
     })

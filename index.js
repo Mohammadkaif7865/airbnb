@@ -6,6 +6,7 @@ let dotenv = require('dotenv');
 dotenv.config();
 let port = process.env.PORT || 3000;
 let mongo = require('mongodb');
+const { query } = require('express');
 let MongoClient = mongo.MongoClient;
 let mongoUrl = process.env.liveUrl;
 // let mongoUrl = process.env.localUrl;
@@ -27,11 +28,30 @@ app.get('/reviews', (req, res) => {
 });
 app.get('/amenities', (req, res) => {
     // { "amenities": { $elemMatch: { $in: ["Beachfront"] } } }
-    db.collection('listingsAndReviews').find({ $and: [{ "amenities": { $in: ["Beachfront"] } }, { "amenities": { $in: ["Essentials"] } }, { "amenities": { $in: ["Smoking allowed"] } }, { "amenities": { $in: ["Roll-in shower"] } }] }).toArray((err, result) => {
-        if (err) throw err;
-        res.send(result);
-    })
-})
+
+    if (req.query.spec1 && req.query.spec2 && req.query.spec3 && req.query.spec4) {
+        db.collection('listingsAndReviews').find({ $and: [{ "amenities": { $in: [req.query.spec1] } }, { "amenities": { $in: [req.query.spec2] } }, { "amenities": { $in: [req.query.spec3] } }, { "amenities": { $in: [req.query.spec4] } }] }).toArray((err, result) => {
+            if (err) throw err;
+            res.send(result);
+        })
+    } else if (req.query.spec1 && req.query.spec2 && req.query.spec3) {
+        db.collection('listingsAndReviews').find({ $and: [{ "amenities": { $in: [req.query.spec1] } }, { "amenities": { $in: [req.query.spec2] } }, { "amenities": { $in: [req.query.spec3] } }] }).toArray((err, result) => {
+            if (err) throw err;
+            res.send(result);
+        })
+    } else if (req.query.spec1 && req.query.spec2) {
+        db.collection('listingsAndReviews').find({ $and: [{ "amenities": { $in: [req.query.spec1] } }, { "amenities": { $in: [req.query.spec2] } }] }).toArray((err, result) => {
+            if (err) throw err;
+            res.send(result);
+        })
+    } else if (req.query.spec1) {
+        db.collection('listingsAndReviews').find({ $and: [{ "amenities": { $in: [req.query.spec1] } }] }).toArray((err, result) => {
+            if (err) throw err;
+            res.send(result);
+        })
+    }
+});
+
 MongoClient.connect(mongoUrl, (err, client) => {
     if (err) {
         console.error(`Error while connecting to MongoDB: ${err}`);

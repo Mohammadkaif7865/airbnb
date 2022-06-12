@@ -58,7 +58,7 @@ app.get('/beds', (req, res) => {
     })
 })
 app.get('/country', (req, res) => {
-    db.collection('listingAndReviews').find({ "address.country": "Turkey" }).toArray((err, result) => {
+    db.collection('listingAndReviews').find({ "address.country": "China" }).toArray((err, result) => {
         if (err) throw err;
         res.send(result);
     })

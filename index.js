@@ -51,7 +51,18 @@ app.get('/amenities', (req, res) => {
         })
     }
 });
-
+app.get('/beds', (req, res) => {
+    db.collection('listingsAndReviews').find({ "beds": { $gt: 15 } }).sort({ "price": 1 }).toArray((err, result) => {
+        if (err) throw err;
+        res.send(result);
+    })
+})
+app.get('/country', (req, res) => {
+    db.collection('listingAndReviews').find({ "address.country": "Turkey" }).toArray((err, result) => {
+        if (err) throw err;
+        res.send(result);
+    })
+})
 MongoClient.connect(mongoUrl, (err, client) => {
     if (err) {
         console.error(`Error while connecting to MongoDB: ${err}`);

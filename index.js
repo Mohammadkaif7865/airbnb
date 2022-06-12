@@ -21,7 +21,7 @@ app.get('/', (req, res) => {
 });
 // db.test.find({'array':{$elemMatch:{value:"value2"}})
 app.get('/reviews', (req, res) => {
-    db.collection('listingsAndReviews').find({ "price": { $gt: 2500, $lt: 5000 } }).sort({ "price": 1 }).toArray((err, result) => {
+    db.collection('listingsAndReviews').find({ "price": { $gt: 3000, $lt: 5000 } }).sort({ "price": 1 }).toArray((err, result) => {
         if (err) throw err;
         res.send(result);
     });
@@ -58,7 +58,7 @@ app.get('/beds', (req, res) => {
     })
 })
 app.get('/region/:country', (req, res) => {
-    db.collection('listingsAndReviews').find({ "address.country": req.params.country }).toArray((err, result) => {
+    db.collection('listingsAndReviews').find({ "address.country": req.params.country }).sort({ "price": 1 }).toArray((err, result) => {
         if (err) throw err;
         res.send(result);
     })

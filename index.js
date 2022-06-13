@@ -72,4 +72,5 @@ MongoClient.connect(mongoUrl, (err, client) => {
         if (err) throw err;
         console.log(`Express Server listening on port ${port}`);
     })
-})
+});
+// {$and:[{"address.country":{$ne:"Turkey"}},{"address.country":{$ne:"Australia"}},{"address.country":{$ne:"United States"}},{"address.country":{$ne:"Portugal"}},{"address.country":{$ne:"Spain"}},{"address.country":{$ne:"Hong Kong"}},{"address.country":{$ne:"Canada"}},{"address.country":{$ne:"Brazil"}}]}

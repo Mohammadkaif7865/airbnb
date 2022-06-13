@@ -63,12 +63,12 @@ app.get('/region/:country', (req, res) => {
         res.send(result);
     });
 });
-app.get('/region/:country/sort', (req, res) => {
-    db.collection('listingsAndReviews').find({ $and: [{ "address.country": req.params.country }, { "price": { $gt: req.query.lCost, $lt: req.query.hCost } }] }).sort({ "price": 1 }).toArray((err, result) => {
+app.get('/regionWithFilter/:country', (req, res) => {
+    db.collection('listingsAndReviews').find({ $and: [{ "address.country": req.params.country }, { "price": { $gt: Number(req.query.lowCost), $lt: Number(req.query.highCost) } }] }).sort({ "price": 1 }).toArray((err, result) => {
         if (err) throw err;
         res.send(result);
-    });
-});
+    })
+})
 MongoClient.connect(mongoUrl, (err, client) => {
     if (err) {
         console.error(`Error while connecting to MongoDB: ${err}`);

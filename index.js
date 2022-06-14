@@ -20,12 +20,14 @@ app.get('/', (req, res) => {
     res.send('Express server default');
 });
 // db.test.find({'array':{$elemMatch:{value:"value2"}})
+//stay on the basis of price filter low to high
 app.get('/reviews', (req, res) => {
     db.collection('listingsAndReviews').find({ "price": { $gt: 3000, $lt: 5000 } }).sort({ "price": 1 }).toArray((err, result) => {
         if (err) throw err;
         res.send(result);
     });
 });
+// stay on the basis of amenities
 app.get('/amenities', (req, res) => {
     // { "amenities": { $elemMatch: { $in: ["Beachfront"] } } }
 
@@ -51,18 +53,21 @@ app.get('/amenities', (req, res) => {
         });
     }
 });
+//stay on the basis of number of beds
 app.get('/beds', (req, res) => {
     db.collection('listingsAndReviews').find({ "beds": { $gt: 15 } }).sort({ "price": 1 }).toArray((err, result) => {
         if (err) throw err;
         res.send(result);
     });
 });
+//All stay on the basis of country
 app.get('/region/:country', (req, res) => {
     db.collection('listingsAndReviews').find({ "address.country": req.params.country }).sort({ "price": 1 }).toArray((err, result) => {
         if (err) throw err;
         res.send(result);
     });
 });
+//this api is to get sorted cost data on the basis or country
 app.get('/regionWithFilter/:country', (req, res) => {
     db.collection('listingsAndReviews').find({ $and: [{ "address.country": req.params.country }, { "price": { $gt: Number(req.query.lowCost), $lt: Number(req.query.highCost) } }] }).sort({ "price": 1 }).toArray((err, result) => {
         if (err) throw err;
